@@ -1,6 +1,6 @@
 <?php if ( !defined('BASEPATH') ) exit('No direct script access');
 
-require_once(__DIR__ . '/oauth/oauth.php');
+require_once(__DIR__ . '/oauth/lib/oauth.php');
 require_once(__DIR__ . '/autoloader.php');
 require_once(__DIR__ . '/exception/autoloader_exception.php');
 

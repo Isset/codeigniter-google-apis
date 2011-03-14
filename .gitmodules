@@ -1,0 +1,3 @@
+[submodule "libraries/oauth"]
+	path = libraries/oauth
+	url = git://github.com/Isset/OAuth.git
