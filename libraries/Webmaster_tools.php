@@ -329,8 +329,9 @@ class Webmaster_tools
 			TRUE
 		);
 
-		$website  = $this->api_url . 'sites/' . urlencode($website);
-		$response = $this->CI->google_api->oauth->request(
+		$request_body = trim($request_body);
+		$website      = $this->api_url . 'sites/' . urlencode($website);
+		$response     = $this->CI->google_api->oauth->request(
 			$website, 'PUT', NULL, array(
 				CURLOPT_HEADER     => TRUE,
 				'headers'          => HTTP::default_headers(strlen($request_body)),

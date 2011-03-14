@@ -32,16 +32,26 @@ use \OAuth\Exception\Consumer as ConsumerException;
 class Consumer
 {
 	/**
-	 * Array containing the global configuration for each cURL request.
+	 * Array containing the default configuration for each cURL request.
 	 *
 	 * @author Yorick Peterse
 	 * @access private
 	 * @var    array
 	 */
-	private $curl_config = array(
+	private $default_curl_config = array(
 		'verify_ssl'    => FALSE,
 		'return_output' => TRUE
 	);
+
+	/**
+	 * Array containing the cURL configuration set in the construct, used for each cURL
+	 * request.
+	 *
+	 * @author Yorick Peterse
+	 * @access private
+	 * @var    array
+	 */
+	private $curl_config = array();
 
 	/**
 	 * Variable containing a new instance of OAuthSimple.
@@ -105,19 +115,13 @@ class Consumer
 	public function __construct($consumer_key, $consumer_secret, $curl_config = array())
 	{
 		$this->oauth        = new OAuthSimple();
-		$this->curl         = curl_init();
 		$this->oauth_config = array(
 			'consumer_key'  => $consumer_key,
 			'shared_secret' => $consumer_secret
 		);
+		$this->curl_config  = $curl_config;
 
-		$curl_config = array_merge($this->curl_config, $curl_config);
-
-		// Set the default cURL configuration items
-		foreach ( $curl_config as $opt => $value )
-		{
-			$this->curl_config($opt, $value);
-		}
+		$this->reset();
 	}
 
 	/**
@@ -192,7 +196,8 @@ class Consumer
 	}
 
 	/**
-	 * Helper method that resets the data in the OAuthSimple instance.
+	 * Helper method that resets the data in the OAuthSimple instance and reconfigures
+	 * cURL to prevent any configuration collisions.
 	 *
 	 * @author Yorick Peterse
 	 * @access public
@@ -202,6 +207,15 @@ class Consumer
 	public function reset()
 	{
 		$this->oauth->reset();
+
+		$this->curl        = curl_init();
+		$this->curl_config = array_merge($this->default_curl_config, $this->curl_config);
+
+		// Set the default cURL configuration items
+		foreach ( $this->curl_config as $opt => $value )
+		{
+			$this->curl_config($opt, $value);
+		}
 	}
 
 	/**
