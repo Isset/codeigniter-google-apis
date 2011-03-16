@@ -593,7 +593,7 @@ class Webmaster_tools
 	 */
 	public function delete_sitemap($website, $sitemap)
 	{
-		$this->CI->google_api->oauth->reset();
+        $this->CI->google_api->oauth->reset();
 
 		$url = $this->api_url . urlencode($website) . '/sitemaps/' . urlencode($sitemap);
 
@@ -631,8 +631,8 @@ class Webmaster_tools
 	 * @return array
 	 */
 	public function get_crawl_issues($website)
-	{
-		$this->CI->google_api->oauth->reset();
+    {
+        $this->CI->google_api->oauth->reset();
 
 		$url      = $this->api_url . urlencode($website) . '/crawlissues/';
 		$response = $this->CI->google_api->oauth->request(
